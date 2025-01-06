@@ -28,7 +28,7 @@ class KundeReadServiceTest {
     @BeforeEach
     void setUp() {
         // Initialize the test data
-        testKunde = new Kunde(1, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null);
+        testKunde = new Kunde(1, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null, null);
     }
 
     @Test

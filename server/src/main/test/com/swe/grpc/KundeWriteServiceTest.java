@@ -30,7 +30,7 @@ class KundeWriteServiceTest {
     void setUp() {
         // Initialize the test data
         testKundeId = UUID.randomUUID();
-        testKunde = new Kunde(testKundeId, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null);
+        testKunde = new Kunde(testKundeId, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null, null);
     }
 
     @Test
