@@ -42,7 +42,7 @@ class KundeReadServiceGrpcImplTest {
     @Test
     void testFindAll() {
         // Given
-        Kunde kunde = new Kunde(UUID.randomUUID(), "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null);
+        Kunde kunde = new Kunde(UUID.randomUUID(), "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null, null);
         when(kundeReadService.findAll()).thenReturn(List.of(kunde));
         KundeProto.Kunde protoKunde = KundeProto.Kunde.newBuilder().setId(kunde.id().toString()).build();
         when(kundeMapperService.toProto(kunde)).thenReturn(protoKunde);
@@ -59,7 +59,7 @@ class KundeReadServiceGrpcImplTest {
     void testFindById_KundeFound() {
         // Given
         UUID kundeId = UUID.randomUUID();
-        Kunde kunde = new Kunde(kundeId, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null);
+        Kunde kunde = new Kunde(kundeId, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null, null);
         KundeProto.Kunde protoKunde = KundeProto.Kunde.newBuilder().setId(kunde.id().toString()).build();
         when(kundeReadService.findById(kundeId)).thenReturn(Optional.of(kunde));
         when(kundeMapperService.toProto(kunde)).thenReturn(protoKunde);

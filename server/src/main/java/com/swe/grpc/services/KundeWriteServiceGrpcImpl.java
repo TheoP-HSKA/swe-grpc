@@ -1,9 +1,12 @@
 package com.swe.grpc.services;
 
+import java.util.UUID;
+
 import com.google.protobuf.Empty;
 import com.swe.grpc.KundeProto;
 import com.swe.grpc.KundeReadServiceGrpc;
 import com.swe.grpc.entity.Kunde;
+
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -19,7 +22,7 @@ public class KundeWriteServiceGrpcImpl extends KundeWriteServiceGrpc.KundeWriteS
         this.kundeMapperService = kundeMapperService;
     }
 
-    @Override
+    // @Override
     public void createKunde(CreateKundeRequest request, StreamObserver<KundeProto.KundeResponse> responseObserver) {
         try {
             Kunde kunde = kundeMapperService.fromCreateRequest(request);
@@ -36,8 +39,9 @@ public class KundeWriteServiceGrpcImpl extends KundeWriteServiceGrpc.KundeWriteS
         }
     }
 
-    @Override
-    public void deleteKunde(KundeProto.KundeByIdRequest request, StreamObserver<KundeProto.KundeResponse> responseObserver) {
+    // @Override
+    public void deleteKunde(KundeProto.KundeByIdRequest request,
+            StreamObserver<KundeProto.KundeResponse> responseObserver) {
         try {
             UUID kundeId = UUID.fromString(request.getId());
             kundeWriteService.deleteKunde(kundeId);

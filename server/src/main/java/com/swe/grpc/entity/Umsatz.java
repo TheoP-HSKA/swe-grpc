@@ -1,4 +1,8 @@
 package com.swe.grpc.entity;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
 public class Umsatz {
     private BigDecimal betrag;
     private Currency waehrung;
@@ -42,6 +46,6 @@ public class Umsatz {
 
     @Override
     public String toString() {
-        return "Umsatz{" + "betrag=" + betrag + ", waehrung=" + waehrung +  '}';
+        return "Umsatz{" + "betrag=" + betrag + ", waehrung=" + waehrung + '}';
     }
 }

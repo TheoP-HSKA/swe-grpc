@@ -34,6 +34,9 @@ dependencies {
 
     // javax.annotation for @Generated
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
+
+    //Jackson for Json Value
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0")
 }
 
 protobuf {

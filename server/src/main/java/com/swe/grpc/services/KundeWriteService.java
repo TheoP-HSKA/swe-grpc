@@ -1,7 +1,10 @@
 package com.swe.grpc.services;
 
-
 import com.swe.grpc.entity.Kunde;
+import com.swe.grpc.repository.KundeRepository;
+
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,4 +27,3 @@ public class KundeWriteService {
         kundeRepository.deleteById(id); // Delete the Kunde
     }
 }
-

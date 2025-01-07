@@ -1,12 +1,20 @@
 package com.swe.grpc.entity;
+
+import java.util.stream.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum GeschlechtType {
-    /// _Männlich_ mit dem internen Wert `M` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Männlich_ mit dem internen Wert `M` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     MAENNLICH("M"),
 
-    /// _Weiblich_ mit dem internen Wert `W` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Weiblich_ mit dem internen Wert `W` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     WEIBLICH("W"),
 
-    /// _Divers_ mit dem internen Wert `D` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Divers_ mit dem internen Wert `D` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     DIVERS("D");
 
     private final String value;
@@ -27,13 +35,14 @@ public enum GeschlechtType {
 
     /// Konvertierung eines Strings in einen Enum-Wert.
     ///
-    /// @param value Der String, zu dem ein passender Enum-Wert ermittelt werden soll.
+    /// @param value Der String, zu dem ein passender Enum-Wert ermittelt werden
+    /// soll.
     /// @return Passender Enum-Wert oder null.
     @JsonCreator
     public static GeschlechtType of(final String value) {
         return Stream.of(values())
-            .filter(geschlecht -> geschlecht.value.equalsIgnoreCase(value))
-            .findFirst()
-            .orElse(null);
+                .filter(geschlecht -> geschlecht.value.equalsIgnoreCase(value))
+                .findFirst()
+                .orElse(null);
     }
 }

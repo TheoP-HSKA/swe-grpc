@@ -1,13 +1,20 @@
 package com.swe.grpc.entity;
 
+import java.util.stream.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum InteresseType {
-    /// _Sport_ mit dem internen Wert `S` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Sport_ mit dem internen Wert `S` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     SPORT("S"),
 
-    /// _Lesen_ mit dem internen Wert `L` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Lesen_ mit dem internen Wert `L` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     LESEN("L"),
 
-    /// _Reisen_ mit dem internen Wert `R` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Reisen_ mit dem internen Wert `R` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     REISEN("R");
 
     private final String value;
@@ -28,13 +35,14 @@ public enum InteresseType {
 
     /// Konvertierung eines Strings in einen Enum-Wert.
     ///
-    /// @param value Der String, zu dem ein passender Enum-Wert ermittelt werden soll.
+    /// @param value Der String, zu dem ein passender Enum-Wert ermittelt werden
+    /// soll.
     /// @return Passender Enum-Wert oder null.
     @JsonCreator
     public static InteresseType of(final String value) {
         return Stream.of(values())
-            .filter(interesse -> interesse.value.equalsIgnoreCase(value))
-            .findFirst()
-            .orElse(null);
+                .filter(interesse -> interesse.value.equalsIgnoreCase(value))
+                .findFirst()
+                .orElse(null);
     }
 }

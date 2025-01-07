@@ -4,6 +4,7 @@ import com.google.protobuf.Empty;
 import com.swe.grpc.KundeProto;
 import com.swe.grpc.KundeReadServiceGrpc;
 import com.swe.grpc.entity.Kunde;
+
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;

@@ -1,15 +1,24 @@
 package com.swe.grpc.entity;
+
+import java.util.stream.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum FamilienstandType {
-    /// _Ledig_ mit dem internen Wert `L` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Ledig_ mit dem internen Wert `L` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     LEDIG("L"),
 
-    /// _Verheiratet_ mit dem internen Wert `VH` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Verheiratet_ mit dem internen Wert `VH` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     VERHEIRATET("VH"),
 
-    /// _Geschieden_ mit dem internen Wert `G` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Geschieden_ mit dem internen Wert `G` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     GESCHIEDEN("G"),
 
-    /// _Verwitwet_ mit dem internen Wert `VW` für z.B. das Mapping in einem JSON-Datensatz.
+    /// _Verwitwet_ mit dem internen Wert `VW` für z.B. das Mapping in einem
+    /// JSON-Datensatz.
     VERWITWET("VW");
 
     private final String value;
@@ -30,14 +39,14 @@ public enum FamilienstandType {
 
     /// Konvertierung eines Strings in einen Enum-Wert.
     ///
-    /// @param value Der String, zu dem ein passender Enum-Wert ermittelt werden soll.
+    /// @param value Der String, zu dem ein passender Enum-Wert ermittelt werden
+    /// soll.
     /// @return Passender Enum-Wert oder null.
     @JsonCreator
     public static FamilienstandType of(final String value) {
         return Stream.of(values())
-            .filter(familienstand -> familienstand.value.equalsIgnoreCase(value))
-            .findFirst()
-            .orElse(null);
+                .filter(familienstand -> familienstand.value.equalsIgnoreCase(value))
+                .findFirst()
+                .orElse(null);
     }
 }
-

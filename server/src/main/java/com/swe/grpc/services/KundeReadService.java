@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class KundeReadService {
@@ -19,7 +20,7 @@ public class KundeReadService {
         return kundenRepository.findAll();
     }
 
-    public Optional<Kunde> findById(final int id) {
+    public Optional<Kunde> findById(final UUID id) {
         return kundenRepository.findById(id);
     }
 
