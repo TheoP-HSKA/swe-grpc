@@ -75,6 +75,7 @@ public class KundeRepository {
     }
 
     // Helper method to convert String to URL
+    @SuppressWarnings("deprecation")
     private static URL toURL(String urlString) {
         try {
             return new URL(urlString);

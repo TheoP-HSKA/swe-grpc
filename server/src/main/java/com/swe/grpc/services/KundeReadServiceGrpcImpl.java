@@ -10,6 +10,7 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @GrpcService
 public class KundeReadServiceGrpcImpl extends KundeReadServiceGrpc.KundeReadServiceImplBase {
@@ -32,15 +33,14 @@ public class KundeReadServiceGrpcImpl extends KundeReadServiceGrpc.KundeReadServ
 
     @Override
     public void findById(com.swe.grpc.KundeProto.KundeByIdRequest request,
-                         io.grpc.stub.StreamObserver<com.swe.grpc.KundeProto.Kunde> responseObserver) {
-        Optional<Kunde> kunde = kundeReadService.findById(request.getId());
+            io.grpc.stub.StreamObserver<com.swe.grpc.KundeProto.Kunde> responseObserver) {
+        Optional<Kunde> kunde = kundeReadService.findById(UUID.fromString(request.getId()));
 
         if (kunde.isEmpty()) {
             responseObserver.onError(
                     Status.NOT_FOUND
                             .withDescription("Kunde mit ID " + request.getId() + " nicht gefunden.")
-                            .asRuntimeException()
-            );
+                            .asRuntimeException());
             return;
         }
         var protoKunde = kundeMapperService.toProto(kunde.get());

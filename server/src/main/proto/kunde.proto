@@ -42,7 +42,7 @@ message Adresse {
 // Umsatz object
 message Umsatz {
     double betrag = 1;
-    google.protobuf.Timestamp datum = 2;
+    string waehrung = 2;
 }
 
 // Kunde object
@@ -92,6 +92,9 @@ message CreateKundeRequest {
     repeated InteresseType interessen = 11;
 }
 
+message DeleteKundeRequest {
+    string id = 1; // UUID of the Kunde to delete
+}
 
 message KundeResponse {
     string message = 1;
