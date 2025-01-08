@@ -3,21 +3,98 @@ syntax = "proto3";
 option java_package = "com.swe.grpc";
 option java_outer_classname = "KundeProto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/Timestamp.proto";
 
-service KundeReadService{
-  rpc findAll(google.protobuf.Empty) returns (stream Kunde);
-  rpc findById(KundeByIdRequest) returns (Kunde);
+// Enum for GeschlechtType
+enum GeschlechtType {
+    UNDEFINED_GESCHLECHT = 0;
+    MAENNLICH = 1;
+    WEIBLICH = 2;
+    DIVERS = 3;
+}
+
+// Enum for FamilienstandType
+enum FamilienstandType {
+    UNDEFINED_FAMILIENSTAND = 0;
+    LEDIG = 1;
+    VERHEIRATET = 2;
+    GESCHIEDEN = 3;
+    VERWITWET = 4;
+}
+
+// Enum for InteresseType
+enum InteresseType {
+    UNDEFINED_INTERESSE = 0;
+    SPORT = 1;
+    LESEN = 2;
+    REISEN = 3;
+}
+
+// Address object
+message Adresse {
+    string strasse = 1;
+    string hausnummer = 2;
+    string plz = 3;
+    string ort = 4;
+}
+
+// Umsatz object
+message Umsatz {
+    double betrag = 1;
+    string waehrung = 2;
+}
+
+// Kunde object
+message Kunde {
+    string id = 1; // UUID
+    string nachname = 2;
+    string email = 3;
+    int32 kategorie = 4;
+    bool hasNewsletter = 5;
+    google.protobuf.Timestamp geburtsdatum = 6;
+    string homepage = 7; // URL as string
+    GeschlechtType geschlecht = 8;
+    FamilienstandType familienstand = 9;
+    Adresse adresse = 10;
+    repeated Umsatz umsaetze = 11;
+    repeated InteresseType interessen = 12;
+}
+
+// Request for findById
+message KundeByIdRequest {
+    string id = 1;
+}
+
+// Service definition
+service KundeReadService {
+    rpc findAll(google.protobuf.Empty) returns (stream Kunde);
+    rpc findById(KundeByIdRequest) returns (Kunde);
+}
+
+service KundeWriteService {
+    rpc createKunde(CreateKundeRequest) returns (KundeResponse);
+    rpc deleteKunde(KundeByIdRequest) returns (KundeResponse);
 }
 
 
-message KundeByIdRequest{
-  uint32 id = 1;
+message CreateKundeRequest {
+    string nachname = 1;
+    string email = 2;
+    int32 kategorie = 3;
+    bool has_newsletter = 4;
+    google.protobuf.Timestamp geburtsdatum = 5;
+    string homepage = 6;
+    GeschlechtType geschlecht = 7;
+    FamilienstandType familienstand = 8;
+    Adresse adresse = 9;
+    repeated Umsatz umsaetze = 10;
+    repeated InteresseType interessen = 11;
 }
 
-message Kunde{
-  uint32 id = 1;
-  string vorname = 2;
-  string nachname = 3;
-  string email = 4;
-  string geburtsdatum = 5; // ISO 8601 yyyy-MM-dd
+message DeleteKundeRequest {
+    string id = 1; // UUID of the Kunde to delete
+}
+
+message KundeResponse {
+    string message = 1;
 }

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Currency;
@@ -12,8 +11,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.swe.grpc.entity.*;
-
-import io.grpc.stub.StreamObserver;
 
 import com.swe.grpc.KundeProto;
 import com.swe.grpc.KundeProto.CreateKundeRequest;
