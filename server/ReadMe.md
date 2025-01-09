@@ -1,6 +1,6 @@
 # GRPC Setup
 
-- Move `KundeMapperService.java`, `KundeReadServiceGrpcImpl.java` to your service directory.
+- Move `client` and `server` folder to your root directory. Do not add the duplicates. 
 - Update your POM.xml with:
 
 ```
