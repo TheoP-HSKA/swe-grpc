@@ -1,19 +1,27 @@
-package com.swe.grpc.services;
+package com.swe.grpc;
 
-import com.swe.grpc.entity.Kunde;
-import com.swe.grpc.KundeProto;
-import org.assertj.core.api.SoftAssertions;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import com.swe.grpc.KundeProto.InteresseType;
+import com.swe.grpc.KundeProto.Umsatz;
+import com.swe.grpc.entity.Adresse;
+import com.swe.grpc.entity.FamilienstandType;
+import com.swe.grpc.entity.GeschlechtType;
+import com.swe.grpc.entity.Kunde;
+import com.swe.grpc.services.KundeMapperService;
 
 @Tag("unit")
 @Tag("service-mapper")
@@ -30,28 +38,29 @@ class KundeMapperServiceTest {
     private static final String TEST_NACHNAME = "Müller";
     private static final String TEST_EMAIL = "mueller@example.com";
     private static final LocalDate TEST_GEBURTSDATUM = LocalDate.of(1990, 1, 1);
-    private static final URL TEST_HOMEPAGE = new URL("http://www.mueller.de");
     
-    private Kunde createTestKunde() {
+    @SuppressWarnings("deprecation")
+private Kunde createTestKunde() throws MalformedURLException{
         return new Kunde(
                 TEST_ID,
                 TEST_NACHNAME,
                 TEST_EMAIL,
-                "Kunde",
+                2,
                 true,
                 TEST_GEBURTSDATUM,
-                TEST_HOMEPAGE,
-                Kunde.GeschlechtType.MALE,
-                Kunde.FamilienstandType.SINGLE,
-                new Kunde.Adresse("Musterstraße", "12", "12345", "Musterstadt"),
-                List.of(new Kunde.Umsatz(100.0, LocalDate.now())),
-                List.of(Kunde.InteresseType.SPORT)
+                new URL("http://www.mueller.de"),
+                GeschlechtType.MAENNLICH,
+                FamilienstandType.LEDIG,
+                new Adresse("12345", "Musterstadt"),
+                List.of(),
+                List.of(com.swe.grpc.entity.InteresseType.SPORT)
         );
     }
 
     @Test
     @DisplayName("Test mapping Kunde to ProtoKunde")
-    void testToProto() {
+    @SuppressWarnings("unused")
+    void testToProto() throws MalformedURLException{
         // Given
         Kunde kunde = createTestKunde();
 
@@ -66,15 +75,16 @@ class KundeMapperServiceTest {
         softly.assertThat(protoKunde.getGeburtsdatum().getSeconds())
                 .isEqualTo(kunde.geburtsdatum().atStartOfDay().toEpochSecond(java.time.ZoneOffset.UTC));
         softly.assertThat(protoKunde.getHomepage()).isEqualTo(kunde.homepage().toString());
-        softly.assertThat(protoKunde.getGeschlecht()).isEqualTo(KundeProto.GeschlechtType.MALE);
-        softly.assertThat(protoKunde.getFamilienstand()).isEqualTo(KundeProto.FamilienstandType.SINGLE);
+        softly.assertThat(protoKunde.getGeschlecht()).isEqualTo(KundeProto.GeschlechtType.MAENNLICH);
+        softly.assertThat(protoKunde.getFamilienstand()).isEqualTo(KundeProto.FamilienstandType.LEDIG);
         softly.assertThat(protoKunde.getUmsaetzeCount()).isEqualTo(kunde.umsaetze().size());
         softly.assertThat(protoKunde.getInteressenCount()).isEqualTo(kunde.interessen().size());
     }
 
-    @Test
+    @SuppressWarnings({"deprecation", "unused"})
+@Test
     @DisplayName("Test mapping ProtoKunde to Kunde")
-    void testFromProto() {
+    void testFromProto() throws MalformedURLException{
         // Given
         KundeProto.Kunde protoKunde = KundeProto.Kunde.newBuilder()
                 .setId(TEST_ID.toString())
@@ -83,15 +93,13 @@ class KundeMapperServiceTest {
                 .setGeburtsdatum(com.google.protobuf.Timestamp.newBuilder()
                         .setSeconds(TEST_GEBURTSDATUM.atStartOfDay().toEpochSecond(java.time.ZoneOffset.UTC))
                         .build())
-                .setHomepage(TEST_HOMEPAGE.toString())
-                .setGeschlecht(KundeProto.GeschlechtType.MALE)
-                .setFamilienstand(KundeProto.FamilienstandType.SINGLE)
-                .addUmsaetze(KundeProto.Umsatz.newBuilder().setBetrag(100.0).setDatum(
-                        com.google.protobuf.Timestamp.newBuilder()
-                                .setSeconds(LocalDate.now().atStartOfDay(java.time.ZoneOffset.UTC).toEpochSecond())
-                                .build()
-                ).build())
-                .addInteressen(KundeProto.InteresseType.SPORT)
+                .setHomepage(new URL("http://www.mueller.de").toString())
+                .setGeschlecht(KundeProto.GeschlechtType.MAENNLICH)
+                .setFamilienstand(KundeProto.FamilienstandType.LEDIG)
+                .addAllUmsaetze(Arrays.asList(
+                        Umsatz.newBuilder().setBetrag(150.75).setWaehrung("EUR").build(),
+                        Umsatz.newBuilder().setBetrag(320.40).setWaehrung("USD").build()))
+                .addAllInteressen(Arrays.asList(InteresseType.SPORT, InteresseType.LESEN))
                 .build();
 
         // When
@@ -103,9 +111,9 @@ class KundeMapperServiceTest {
         softly.assertThat(kunde.nachname()).isEqualTo(TEST_NACHNAME);
         softly.assertThat(kunde.email()).isEqualTo(TEST_EMAIL);
         softly.assertThat(kunde.geburtsdatum()).isEqualTo(TEST_GEBURTSDATUM);
-        softly.assertThat(kunde.homepage()).isEqualTo(TEST_HOMEPAGE);
-        softly.assertThat(kunde.geschlecht()).isEqualTo(Kunde.GeschlechtType.MALE);
-        softly.assertThat(kunde.familienstand()).isEqualTo(Kunde.FamilienstandType.SINGLE);
+        softly.assertThat(kunde.homepage()).isEqualTo(new URL("http://www.mueller.de"));
+        softly.assertThat(kunde.geschlecht()).isEqualTo(GeschlechtType.MAENNLICH);
+        softly.assertThat(kunde.familienstand()).isEqualTo(FamilienstandType.LEDIG);
         softly.assertThat(kunde.umsaetze()).hasSize(1);
         softly.assertThat(kunde.interessen()).hasSize(1);
     }

@@ -1,50 +1,25 @@
 package com.swe.grpc.client;
-/* package com.swe.grpc.client;
-
-
-import com.swe.grpc.KundeProto;
-import com.swe.grpc.KundeReadServiceGrpc;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-
-public class SweGrpcClientApplication {
-
-    public static KundeProto.Kunde findById(int id) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
-                .usePlaintext()
-                .build();
-
-        KundeReadServiceGrpc.KundeReadServiceBlockingStub stub = KundeReadServiceGrpc.newBlockingStub(channel);
-
-        try {
-            KundeProto.KundeByIdRequest request = KundeProto.KundeByIdRequest.newBuilder().setId(id).build();
-            return stub.findById(request);
-        } finally {
-            channel.shutdown();
-        }
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println("Hello from gRPC client!");
-
-        final var kunde = findById(1);
-        System.out.println("Kunde: " + kunde);
-    }
-
-}
- */
-
-import com.swe.grpc.KundeProto.*;
-import com.swe.grpc.KundeReadServiceGrpc;
-import com.swe.grpc.KundeWriteServiceGrpc;
-import com.google.protobuf.Empty;
-import com.google.protobuf.Timestamp;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 import java.time.Instant;
 import java.util.Arrays;
+
+import com.google.protobuf.Empty;
+import com.google.protobuf.Timestamp;
+import com.swe.grpc.KundeProto.*;
+import com.swe.grpc.KundeProto.Adresse;
+import com.swe.grpc.KundeProto.CreateKundeRequest;
+import com.swe.grpc.KundeProto.FamilienstandType;
+import com.swe.grpc.KundeProto.GeschlechtType;
+import com.swe.grpc.KundeProto.InteresseType;
+import com.swe.grpc.KundeProto.Kunde;
+import com.swe.grpc.KundeProto.KundeByIdRequest;
+import com.swe.grpc.KundeProto.KundeResponse;
+import com.swe.grpc.KundeProto.Umsatz;
+import com.swe.grpc.KundeReadServiceGrpc;
+import com.swe.grpc.KundeWriteServiceGrpc;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 public class KundeClient {
     public static void main(String[] args) {

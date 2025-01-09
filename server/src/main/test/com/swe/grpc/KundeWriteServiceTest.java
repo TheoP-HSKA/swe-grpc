@@ -1,18 +1,22 @@
-package com.swe.grpc.services;
-
-import com.swe.grpc.entity.Kunde;
-import com.swe.grpc.repository.KundeRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+package com.swe.grpc;
 
 import java.util.UUID;
 
-import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.swe.grpc.entity.Kunde;
+import com.swe.grpc.repository.KundeRepository;
+import com.swe.grpc.services.KundeWriteService;
 
 @ExtendWith(MockitoExtension.class)
 class KundeWriteServiceTest {
@@ -30,7 +34,7 @@ class KundeWriteServiceTest {
     void setUp() {
         // Initialize the test data
         testKundeId = UUID.randomUUID();
-        testKunde = new Kunde(testKundeId, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null, null);
+        testKunde = new Kunde(testKundeId, "Müller", "mueller@example.com", 1, true, null, null, null, null, null, null, null);
     }
 
     @Test
@@ -43,8 +47,8 @@ class KundeWriteServiceTest {
 
         // Then
         assertThat(createdKunde).isNotNull();
-        assertThat(createdKunde.getId()).isEqualTo(testKundeId);
-        assertThat(createdKunde.getNachname()).isEqualTo("Müller");
+        assertThat(createdKunde.id().equals(testKundeId));
+        assertThat(createdKunde.nachname().equals("Müller"));
         verify(kundeRepository, times(1)).save(testKunde);
     }
 

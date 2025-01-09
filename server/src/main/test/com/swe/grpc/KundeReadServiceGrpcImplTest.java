@@ -1,24 +1,28 @@
-package com.swe.grpc.services;
+package com.swe.grpc;
 
-import com.google.protobuf.Empty;
-import com.swe.grpc.KundeProto;
-import com.swe.grpc.KundeReadServiceGrpc;
-import com.swe.grpc.entity.Kunde;
-import io.grpc.Status;
-import io.grpc.stub.StreamObserver;
-import net.devh.boot.grpc.server.service.GrpcService;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-import java.util.UUID;
+import com.google.protobuf.Empty;
+import com.swe.grpc.entity.Kunde;
+import com.swe.grpc.services.KundeMapperService;
+import com.swe.grpc.services.KundeReadService;
+import com.swe.grpc.services.KundeReadServiceGrpcImpl;
 
-import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import io.grpc.Status;
+import io.grpc.stub.StreamObserver;
 
 @ExtendWith(MockitoExtension.class)
 class KundeReadServiceGrpcImplTest {
@@ -35,14 +39,16 @@ class KundeReadServiceGrpcImplTest {
     private StreamObserver<KundeProto.Kunde> responseObserver;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         responseObserver = mock(StreamObserver.class);
     }
 
     @Test
+    @SuppressWarnings("unused")
     void testFindAll() {
         // Given
-        Kunde kunde = new Kunde(UUID.randomUUID(), "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null, null);
+        Kunde kunde = new Kunde(UUID.randomUUID(), "Müller", "mueller@example.com", 1, true, null, null, null, null, null, null, null);
         when(kundeReadService.findAll()).thenReturn(List.of(kunde));
         KundeProto.Kunde protoKunde = KundeProto.Kunde.newBuilder().setId(kunde.id().toString()).build();
         when(kundeMapperService.toProto(kunde)).thenReturn(protoKunde);
@@ -56,10 +62,11 @@ class KundeReadServiceGrpcImplTest {
     }
 
     @Test
+    @SuppressWarnings("unused")
     void testFindById_KundeFound() {
         // Given
         UUID kundeId = UUID.randomUUID();
-        Kunde kunde = new Kunde(kundeId, "Müller", "mueller@example.com", "Kunde", true, null, null, null, null, null, null, null);
+        Kunde kunde = new Kunde(kundeId, "Müller", "mueller@example.com", 2, true, null, null, null, null, null, null, null);
         KundeProto.Kunde protoKunde = KundeProto.Kunde.newBuilder().setId(kunde.id().toString()).build();
         when(kundeReadService.findById(kundeId)).thenReturn(Optional.of(kunde));
         when(kundeMapperService.toProto(kunde)).thenReturn(protoKunde);
@@ -74,6 +81,7 @@ class KundeReadServiceGrpcImplTest {
     }
 
     @Test
+    @SuppressWarnings("unused")
     void testFindById_KundeNotFound() {
         // Given
         UUID kundeId = UUID.randomUUID();

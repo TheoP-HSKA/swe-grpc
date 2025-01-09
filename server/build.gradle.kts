@@ -37,6 +37,24 @@ dependencies {
 
     //Jackson for Json Value
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0")
+
+    // tests
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation("org.assertj:assertj-core:3.18.1")
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation("org.mockito:mockito-core:2.1.0")
+    // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
+    testImplementation("org.mockito:mockito-junit-jupiter:5.15.2")
+
+
+
+
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
 protobuf {
